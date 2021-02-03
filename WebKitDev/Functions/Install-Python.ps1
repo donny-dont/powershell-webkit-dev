@@ -38,6 +38,7 @@ Function Install-Python {
 
     if ($major -ne '2') {
         $pythonUrl = ('https://www.python.org/ftp/python/{0}/python-{0}-amd64.exe' -f $version);
+        $pipUrl = 'https://bootstrap.pypa.io/get-pip.py';
 
         $options = @(
             '/quiet',
@@ -54,6 +55,7 @@ Function Install-Python {
     }
     else {
         $pythonUrl = ('https://www.python.org/ftp/python/{0}/python-{0}.amd64.msi' -f $version);
+        $pipUrl = 'https://bootstrap.pypa.io/2.7/get-pip.py';
 
         $options = @(
             'ALLUSERS=1',
@@ -71,7 +73,7 @@ Function Install-Python {
     $pipInstall = ('pip=={0}' -f $pipVersion);
     Write-Host ('Installing {0} ...' -f $pipInstall);
 
-    Invoke-WebFileRequest -Url 'https://bootstrap.pypa.io/get-pip.py' -DestinationPath 'get-pip.py';
+    Invoke-WebFileRequest -Url $pipUrl -DestinationPath 'get-pip.py';
     python get-pip.py $pipInstall;
     Remove-Item get-pip.py -Force;
 
